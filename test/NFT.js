@@ -22,7 +22,7 @@ describe('NFT', () => {
     const NFT = await ethers.getContractFactory('NFT')
     nft = await NFT.deploy(NAME, SYMBOL, COST)
 
-    // Mint 
+    // Mint
     const transaction = await nft.connect(minter).mint(URL, { value: COST })
     await transaction.wait()
   })

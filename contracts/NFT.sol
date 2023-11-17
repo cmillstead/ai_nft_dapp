@@ -12,6 +12,8 @@ contract NFT is ERC721URIStorage {
     address public owner;
     uint256 public cost;
 
+    mapping(address => uint256[]) private _ownedTokens;
+
     constructor(
         string memory _name,
         string memory _symbol,
@@ -29,6 +31,11 @@ contract NFT is ERC721URIStorage {
         uint256 newItemId = _tokenIds.current();
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
+        _ownedTokens[msg.sender].push(newItemId);
+    }
+
+    function getTokensOfOwner(address ownerAddress) public view returns (uint256[] memory) {
+        return _ownedTokens[ownerAddress];
     }
 
     function totalSupply() public view returns (uint256) {

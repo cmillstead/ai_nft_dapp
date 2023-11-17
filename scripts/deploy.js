@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
   const NAME = "AI Generated NFT"
   const SYMBOL = "AINFT"
-  const COST = ethers.utils.parseUnits("1", "ether") // 1 ETH
+  const COST = hre.ethers.utils.parseUnits("0.25", "ether") // .25 ETH
 
   const NFT = await hre.ethers.getContractFactory("NFT")
   const nft = await NFT.deploy(NAME, SYMBOL, COST)
