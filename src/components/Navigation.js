@@ -9,21 +9,21 @@ const Navigation = ({ account, setAccount }) => {
 
     return (
         <nav>
-            <div className='nav__brand'>
+            <div className='nav-brand'>
                 <h1>AI NFT Generator</h1>
             </div>
 
             {account ? (
                 <button
                     type="button"
-                    className='nav__connect'
+                    className='nav-connect'
                 >
                     {account.slice(0, 6) + '...' + account.slice(38, 42)}
                 </button>
             ) : (
                 <button
                     type="button"
-                    className='nav__connect'
+                    className='nav-connect'
                     onClick={connectHandler}
                 >
                     Connect

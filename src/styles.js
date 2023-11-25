@@ -1,0 +1,22 @@
+export const styles = [
+    { id: 'monochrome', name: 'Monochrome' },
+    { id: 'retro', name: 'Retro' },
+    { id: 'pop_art', name: 'Pop Art' },
+    { id: 'abstract', name: 'Abstract' },
+    { id: 'realistic', name: 'Realistic' },
+    { id: 'cartoonish', name: 'Cartoonish' },
+    { id: 'pixel_art', name: 'Pixel Art' },
+    { id: 'sketch', name: 'Sketch' },
+    { id: 'oil_painting', name: 'Oil Painting' },
+    { id: 'watercolor', name: 'Watercolor' },
+    { id: 'impressionist', name: 'Impressionist' },
+    { id: 'cubist', name: 'Cubist' },
+    { id: 'surrealist', name: 'Surrealist' },
+    { id: 'minimalist', name: 'Minimalist' },
+    { id: 'glitch_art', name: 'Glitch Art' },
+    { id: 'graffiti', name: 'Graffiti' },
+    { id: 'pointillism', name: 'Pointillism' },
+    { id: 'chalk_drawing', name: 'Chalk Drawing' },
+    { id: 'charcoal', name: 'Charcoal' },
+    { id: 'pastel', name: 'Pastel' }
+  ];
