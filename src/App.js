@@ -33,13 +33,13 @@ function App() {
   const [isError, setIsError] = useState(false);
   const [carouselKey, setCarouselKey] = useState(0);
   const [selectedCarouselItem, setSelectedCarouselItem] = useState(0);
+  const [metadataUrl, setMetadataUrl] = useState(null);
   const [nftData, setNftData] = useState({
     provider: null,
     account: null,
     nft: null,
     url: null
   });
-
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -111,7 +111,6 @@ function App() {
       });
       const url = response.data.url;
       setURL(url);
-      console.log('Metadata URI: ', url);
       return url;
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -121,23 +120,30 @@ function App() {
 
 
   const fetchMetadataAndSetImage = async (tokenURI) => {
-    let metadataUrl = toHttpUrl(tokenURI);
-    const metadataResponse = await fetch(metadataUrl);
-    const metadata = await metadataResponse.json();
-    const imageUrl = metadata.image;
+    try {
+      let metadataUrl = toHttpUrl(tokenURI);
+      setMetadataUrl(metadataUrl);
+      const metadataResponse = await fetch(metadataUrl);
+      if (!metadataResponse.ok) {
+        throw new Error('Failed to fetch metadata');
+      }
+      const metadata = await metadataResponse.json();
+      const imageUrl = metadata.image;
+      let httpImageUrl = toHttpUrl(imageUrl);
 
-    let httpImageUrl = toHttpUrl(imageUrl);
-    setMetadataList(prevMetadataList => [...prevMetadataList, { image: httpImageUrl }]);
-    setLastMintedImage(httpImageUrl);
-    setSelectedCarouselItem(metadataList.length);
+      setMetadataList(prevMetadataList => [...prevMetadataList, { image: httpImageUrl }]);
+      setLastMintedImage(httpImageUrl);
+      setSelectedCarouselItem(metadataList.length);
+    } catch (error) {
+      console.error("Error fetching metadata:", error);
+    }
   };
 
 
   const mintImage = async (tokenURI) => {
     setMessage("Waiting for Mint...");
-
     const signer = await provider.getSigner();
-    const transaction = await nft.connect(signer).mint(tokenURI, { value: ethers.utils.parseEther('1') });
+    const transaction = await nft.connect(signer).mint(tokenURI, { value: nft.cost() });
     await transaction.wait();
 
     setImage(null);
@@ -366,11 +372,9 @@ function App() {
         </Carousel>
       </div>
 
-
-
-      {!isWaiting && url && (
+      {!isWaiting && metadataUrl && (
         <p>
-          View&nbsp;<a href={url} target="_blank" rel="noreferrer">Metadata</a>
+          View&nbsp;<a href={metadataUrl} target="_blank" rel="noreferrer">Metadata</a>
         </p>
       )}
       { isError ? <p>Something went wrong. Please try again.</p> : null }

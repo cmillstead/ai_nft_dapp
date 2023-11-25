@@ -24,7 +24,10 @@ contract NFT is ERC721URIStorage {
     }
 
     function mint(string memory tokenURI) public payable {
-        require(msg.value >= cost);
+        require(
+            msg.value >= cost,
+            "Insufficient funds"
+        );
 
         _tokenIds.increment();
 
@@ -43,8 +46,14 @@ contract NFT is ERC721URIStorage {
     }
 
     function withdraw() public {
-        require(msg.sender == owner);
+        require(
+            msg.sender == owner,
+            "Only owner can withdraw"
+        );
         (bool success, ) = owner.call{value: address(this).balance}("");
-        require(success);
+        require(
+            success,
+            "Withdrawal failed"
+        );
     }
 }
