@@ -3,6 +3,10 @@ import { ethers } from 'ethers';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import Navigation from './components/Navigation';
+import Form from './components/Form';
+import Images from './components/Images';
+import NFTs from './components/NFTs';
+import MetadataLink from './components/MetadataLink';
 import Select from 'react-select';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -255,136 +259,51 @@ function App() {
 
   return (
     <div>
-      <Navigation account={account} setAccount={setAccount} />
+      <Navigation
+        account={account}
+        setAccount={setAccount} />
 
       <div className='form'>
-        <form>
-          <textarea
-              cols='36'
-              rows='2'
-              placeholder='Enter prompt...'
-              onChange={(e) => {
-                setDescription(e.target.value)}
-              }
-            />
-            <input
-              type='text'
-              placeholder='Enter NFT name...'
-              onChange={(e) => {
-                setName(e.target.value)}
-              }
-            />
-            <div className="select-container">
-              <Select
-                options={styleOptions}
-                placeholder='Select style...'
-                value={styleOptions.find(style => style.value === selectedStyle)}
-                onChange={selectStyleHandler}
-              />
-            </div>
+        <Form
+          setDescription={setDescription}
+          setName={setName}
+          styleOptions={styleOptions}
+          selectedStyle={selectedStyle}
+          selectStyleHandler={selectStyleHandler}
+          imagesCreated={imagesCreated}
+          regenerateImages={regenerateImages}
+          isWaiting={isWaiting}
+          createImages={createImages}
+          images={images}
+          image={image}
+          submitHandler={submitHandler}
+          faArrowRight={faArrowRight}
+        />
 
-            {imagesCreated ? (
-              <button
-                onClick={regenerateImages}
-                className='ui'>
-                Regenerate Images
-              </button>
-            ) : (
-              <div>
-                {isWaiting ? (
-                  <div className='text-center spinner'>
-                    <Spinner
-                      animation='border'
-                      style={{ display: 'block', margin: '0 auto', color: 'white' }}
-                    />
-                  </div>
-                ) : (
-                  <button
-                    onClick={createImages}
-                    className='ui'>
-                    Generate Images
-                  </button>
-                )}
-              </div>
-            )}
-
-            {images.length === 0 ? (
-              null
-            ) : (
-              image !== null ? (
-                <button
-                    onClick={submitHandler}
-                    className='ui'>
-                    Mint Selected Image Into NFT
-                </button>
-              ) : (
-                <div className='mint-message'>
-                  Please select an image to mint.
-                  <FontAwesomeIcon icon={faArrowRight} />
-                </div>
-              )
-            )}
-
-          </form>
-
-          <div className="image-container">
-            <div>
-              {!isWaiting && images.length ? (
-              <div className='image-grid'>
-                {images.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => selectImage(img, index)}>
-                    <img
-                      key={index}
-                      src={img}
-                      alt={`AI generated ${index}`}
-                      style={{width: '256px', height: '256px'}}
-                      className={selectedImageIndex.toString() === index.toString() ? 'selected-image' : ''}
-                    />
-                  </button>
-                ))}
-              </div>
-            ) : isWaiting ? (
-              <div className="image-placeholder">
-                <Spinner animation="border" />
-                <p className="message">{message}</p>
-              </div>
-            ) : (
-              null
-            )}
-              </div>
-          </div>
-        </div>
-
-        <div style={{ width: '520px', marginLeft: 'auto', marginRight: 'auto' }}>
-          <Carousel
-            key={carouselKey}
-            selectedItem={selectedCarouselItem}
-            showArrows={true}
-            infiniteLoop={true}
-            showThumbs={false}
-            onChange={(index) => setSelectedCarouselItem(index)}>
-            {metadataList.map((metadata, index) => (
-              <div key={index}>
-                <img
-                  src={metadata.image}
-                  alt={`NFT ${index}`}
-                  style={{ width: '500px', height: '500px' }}
-                  onClick={() => selectImage(metadata.image, index)} />
-              </div>
-            ))}
-          </Carousel>
-        </div>
-
-        {!isWaiting && metadataUrl && (
-          <p>
-            View&nbsp;<a href={metadataUrl} target="_blank" rel="noreferrer">Metadata</a>
-          </p>
-        )}
-        { isError ? <p>Something went wrong. Please try again.</p> : null }
-
+        <Images
+          isWaiting={isWaiting}
+          images={images}
+          selectImage={selectImage}
+          selectedImageIndex={selectedImageIndex}
+          message={message}
+        />
       </div>
+
+      <NFTs
+        carouselKey={carouselKey}
+        selectedCarouselItem={selectedCarouselItem}
+        setSelectedCarouselItem={setSelectedCarouselItem}
+        metadataList={metadataList}
+        selectImage={selectImage}
+      />
+
+      <MetadataLink
+        metadataUrl={metadataUrl}
+        isWaiting={isWaiting}
+        isError={isError}
+      />
+
+    </div>
   );
 };
 
