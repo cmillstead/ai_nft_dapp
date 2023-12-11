@@ -1,16 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { ethers } from 'ethers';
 import axios from 'axios';
-import Spinner from 'react-bootstrap/Spinner';
 import Navigation from './components/Navigation';
 import Form from './components/Form';
 import Images from './components/Images';
 import NFTs from './components/NFTs';
 import MetadataLink from './components/MetadataLink';
-import Select from 'react-select';
-import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import NFT from './abis/NFT.json';
@@ -69,7 +65,7 @@ function App() {
   const createImage = async (seed) => {
     setMessage("Generating Images...");
     try {
-      const response = await axios.post('http://localhost:3001/api/huggingface/create', {
+      const response = await axios.post('https://main--animated-pika-b6990f.netlify.app/api/huggingface/create', {
         inputs: `${description} [Style: ${selectedStyle}]`,
         options: {
           samples: "4",
@@ -113,7 +109,7 @@ function App() {
   const uploadImage = async (imageData) => {
     setMessage('Uploading image to IPFS...');
     try {
-      const response = await axios.post('http://localhost:3001/api/huggingface/upload', {
+      const response = await axios.post('https://main--animated-pika-b6990f.netlify.app/api/huggingface/upload', {
         name,
         description,
         image: imageData,
