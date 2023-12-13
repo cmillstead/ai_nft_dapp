@@ -15,8 +15,8 @@ const Form = ({
     createImages,
     images,
     image,
-    submitHandler,
-    faArrowRight }) => {
+    submitHandler
+    }) => {
     return (
         <form>
           <textarea

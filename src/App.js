@@ -7,7 +7,6 @@ import Images from './components/Images';
 import NFTs from './components/NFTs';
 import MetadataLink from './components/MetadataLink';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import NFT from './abis/NFT.json';
 import config from './config.json';
@@ -273,7 +272,6 @@ function App() {
           images={images}
           image={image}
           submitHandler={submitHandler}
-          faArrowRight={faArrowRight}
         />
 
         <Images
