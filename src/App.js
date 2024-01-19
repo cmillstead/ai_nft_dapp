@@ -92,7 +92,7 @@ function App() {
     }
     setIsWaiting(true);
 
-    const promises = Array.from({ length: 4 }, (_, i) => {
+    const promises = Array.from({ length: 1 }, (_, i) => {
       const randomSeed = Math.floor(Math.random() * 100000);
       return createImage(randomSeed);
     });
