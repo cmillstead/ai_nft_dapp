@@ -82,6 +82,7 @@ function App() {
 
   // function to handle multiple image creation
   const createImages = async (e) => {
+   try {
     if (e) {
       e.preventDefault();
     }
@@ -92,7 +93,7 @@ function App() {
     }
     setIsWaiting(true);
 
-    const promises = Array.from({ length: 1 }, (_, i) => {
+    const promises = Array.from({ length: 4 }, (_, i) => {
       const randomSeed = Math.floor(Math.random() * 100000);
       return createImage(randomSeed);
     });
@@ -102,6 +103,10 @@ function App() {
     setImagesCreated(true);
     setIsWaiting(false);
     return imageList;
+   } catch (error) {
+      console.error(error);
+      setIsError(true);
+   }
   };
 
   // function to upload the image to IPFS
