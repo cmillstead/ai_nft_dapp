@@ -40,6 +40,7 @@ function App() {
     nft: null,
     url: null
   });
+  const IMAGES_COUNT = 4;
 
   // handles the submission of NFT minting
   const submitHandler = async (e) => {
@@ -64,14 +65,18 @@ function App() {
   const createImage = async (seed) => {
     setMessage("Generating Images...");
     try {
-      const response = await axios.post('https://ai-nft-api.vercel.app/api/create', {
-        inputs: `${description} [Style: ${selectedStyle}]`,
-        options: {
-          samples: "4",
-          wait_for_model: true,
-          seed: seed
-        }
-      });
+        const response = await axios.post('https://ai-nft-api.vercel.app/api/create', {
+          inputs: `${description} [Style: ${selectedStyle}]`,
+          options: {
+            samples: IMAGES_COUNT.toString(),
+            wait_for_model: true,
+            seed: seed
+          }
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
 
       return response.data.image;
     } catch (error) {
@@ -93,7 +98,7 @@ function App() {
     }
     setIsWaiting(true);
 
-    const promises = Array.from({ length: 4 }, (_, i) => {
+    const promises = Array.from({ length: IMAGES_COUNT }, (_, i) => {
       const randomSeed = Math.floor(Math.random() * 100000);
       return createImage(randomSeed);
     });
